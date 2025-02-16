@@ -1,10 +1,9 @@
+import { BaseService } from './base.service';
 import { DocumentType } from '@typegoose/typegoose';
 import { User, UserModel } from '../models/user.model';
-import { BaseService } from './base.service';
+import { Character, CharacterModel } from '../models/character.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Ref } from '@typegoose/typegoose';
-import { CharacterClass } from '../models/character-class.model';
 
 export class UserService extends BaseService<User> {
     constructor() {
@@ -17,10 +16,14 @@ export class UserService extends BaseService<User> {
         username: string;
     }): Promise<DocumentType<User>> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        return await this.create({
+
+        // Create user
+        const user = await this.create({
             ...userData,
             password: hashedPassword,
         });
+
+        return user;
     }
 
     async login(email: string, password: string): Promise<string | null> {
@@ -37,7 +40,10 @@ export class UserService extends BaseService<User> {
         );
     }
 
-    async selectClass(userId: string, classId: string): Promise<DocumentType<User> | null> {
-        return await this.update(userId, { selectedClass: classId as unknown as Ref<CharacterClass> });
+    async getUserCharacters(userId: string): Promise<DocumentType<Character>[]> {
+        return await CharacterModel.find({
+            user: userId,
+            deleted: false
+        }).populate('characterClass');
     }
 }

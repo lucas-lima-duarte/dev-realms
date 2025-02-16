@@ -6,7 +6,7 @@ const userController = new UserController();
 
 router.post('/register', userController.register.bind(userController));
 router.post('/login', userController.login.bind(userController));
-router.post('/:userId/select-class', userController.selectClass.bind(userController));
 router.get('/:id', userController.findById.bind(userController));
+router.get('/:id/characters', userController.getUserCharacters.bind(userController));
 
 export default router;

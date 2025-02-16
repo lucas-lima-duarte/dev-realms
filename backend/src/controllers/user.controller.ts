@@ -35,18 +35,13 @@ export class UserController extends BaseController<User> {
         }
     }
 
-    async selectClass(req: Request, res: Response): Promise<void> {
+    async getUserCharacters(req: Request, res: Response): Promise<void> {
         try {
-            const { userId } = req.params;
-            const { classId } = req.body;
-            const user = await this.userService.selectClass(userId, classId);
-            if (!user) {
-                res.status(404).json({ error: 'User not found' });
-                return;
-            }
-            res.json(user);
+            const characters = await this.userService.getUserCharacters(req.params.id);
+            res.json(characters);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
         }
     }
+
 }
