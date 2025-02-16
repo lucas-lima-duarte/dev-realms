@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { BaseService } from '../services/base.service';
 import { BaseModel } from '../models/base.model';
+import { DocumentType } from '@typegoose/typegoose';
 
 export abstract class BaseController<T extends BaseModel> {
     protected service: BaseService<T>;
@@ -26,6 +27,19 @@ export abstract class BaseController<T extends BaseModel> {
                 return;
             }
             res.json(entity);
+        } catch (error) {
+            res.status(400).json({ error: (error as Error).message });
+        }
+    }
+
+    async find(req: Request, res: Response): Promise<void> {
+        try {
+            const list = await this.service.find(req.user?.userId as string);
+            if (!list) {
+                res.status(404).json({ error: 'Entity not found' });
+                return;
+            }
+            res.json(list);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
         }

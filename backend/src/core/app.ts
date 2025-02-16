@@ -1,11 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRoutes from '../routes/user.routes';
+import characterRoutes from '../routes/character.routes';
 
 const app = express();
 
 app.use(express.json());
 app.use('/api/users', userRoutes);
+app.use('/api/characters', characterRoutes);
 
 mongoose
     .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/dev-realms')

@@ -22,6 +22,10 @@ export abstract class BaseService<T extends BaseModel> {
         return await this.model.findOne({ _id: id, deleted: false });
     }
 
+    async find(userId: string): Promise<DocumentType<T> | null> {
+        return await this.model.find({ user: userId, deleted: false });
+    }
+
     async update(id: string, data: Partial<T>): Promise<DocumentType<T> | null> {
         return await this.model.findOneAndUpdate(
             { _id: id, deleted: false },

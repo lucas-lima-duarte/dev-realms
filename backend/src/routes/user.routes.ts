@@ -8,6 +8,7 @@ const userController = new UserController();
 router.post('/register', userController.register.bind(userController));
 router.post('/login', userController.login.bind(userController));
 router.get('/:id', userController.findById.bind(userController));
+
 router.get('/characters', authMiddleware, userController.getUserCharacters.bind(userController));
 
 export default router;
