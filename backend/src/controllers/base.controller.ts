@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { BaseService } from '../services/base.service';
 import { BaseModel } from '../models/base.model';
-import { DocumentType } from '@typegoose/typegoose';
 
 export abstract class BaseController<T extends BaseModel> {
     protected service: BaseService<T>;

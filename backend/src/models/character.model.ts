@@ -2,13 +2,8 @@ import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
 import { BaseModel } from './base.model';
 
 import { User } from './user.model';
-
-enum Classes {
-    Novice = 'Novice',
-    Backend = 'Backend',
-    Frontend = 'Frontend',
-    Infrastructure = 'Infrastructure'
-}
+import { Classes } from '../types/enum/classes.enum';
+import { Difficulties } from '../types/enum/difficulties.enum';
 
 export class Character extends BaseModel {
     @prop({ ref: () => User, required: true })
@@ -29,7 +24,7 @@ export class Character extends BaseModel {
     @prop({ type: () => [String], default: [] })
     public skillTrees: string[];
 
-    @prop({ required: true })
+    @prop({ required: true, enum: Difficulties })
     public difficulty: string;
 }
 

@@ -5,10 +5,10 @@ export interface BaseModel {
 }
 
 export abstract class BaseModel {
-    @prop({ required: true })
+    @prop({ required: true, default: Date.now() })
     public createdAt: Date;
 
-    @prop({ required: true })
+    @prop({})
     public updatedAt: Date;
 
     @prop({ required: true, default: false })

@@ -2,6 +2,7 @@ import { BaseService } from './base.service';
 import { DocumentType } from '@typegoose/typegoose';
 import { User, UserModel } from '../models/user.model';
 import { Character, CharacterModel } from '../models/character.model';
+import { Classes } from '../types/enum/classes.enum';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -21,6 +22,18 @@ export class UserService extends BaseService<User> {
             ...userData,
             password: hashedPassword,
         });
+
+        await Promise.all(Object.values(Classes).map(characterClass =>
+            CharacterModel.create({
+                user: user._id,
+                class: characterClass,
+                difficulty: 'Easy',
+                eloRating: 0,
+                level: 1,
+                experience: 0,
+                skillTrees: []
+            })
+        ));
 
         return user;
     }
