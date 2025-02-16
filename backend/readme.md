@@ -1,2 +1,1 @@
-npm i
-docker-compose up -d
+npm i && docker-compose up -d
