@@ -17,7 +17,6 @@ export class UserService extends BaseService<User> {
     }): Promise<DocumentType<User>> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-        // Create user
         const user = await this.create({
             ...userData,
             password: hashedPassword,
@@ -44,6 +43,6 @@ export class UserService extends BaseService<User> {
         return await CharacterModel.find({
             user: userId,
             deleted: false
-        }).populate('characterClass');
+        })
     }
 }

@@ -37,7 +37,10 @@ export class UserController extends BaseController<User> {
 
     async getUserCharacters(req: Request, res: Response): Promise<void> {
         try {
-            const characters = await this.userService.getUserCharacters(req.params.id);
+            if (!req.user) {
+                throw new Error('User not authenticated');
+            }
+            const characters = await this.userService.getUserCharacters(req.user.userId);
             res.json(characters);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
