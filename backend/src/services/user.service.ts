@@ -1,7 +1,7 @@
 import { BaseService } from './base.service';
 import { DocumentType } from '@typegoose/typegoose';
 import { User, UserModel } from '../models/user.model';
-import { Character, CharacterModel } from '../models/character.model';
+import { CharacterModel } from '../models/character.model';
 import { Classes } from '../types/enum/classes.enum';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -20,9 +20,10 @@ export class UserService extends BaseService<User> {
 
         const user = await this.create({
             ...userData,
-            password: hashedPassword,
+            password: hashedPassword
         });
 
+        // Create all chars
         await Promise.all(Object.values(Classes).map(characterClass =>
             CharacterModel.create({
                 user: user._id,
@@ -50,12 +51,5 @@ export class UserService extends BaseService<User> {
             process.env.JWT_SECRET || 'your-secret-key',
             { expiresIn: '24h' }
         );
-    }
-
-    async getUserCharacters(userId: string): Promise<DocumentType<Character>[]> {
-        return await CharacterModel.find({
-            user: userId,
-            deleted: false
-        })
     }
 }
